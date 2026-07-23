@@ -162,62 +162,14 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.6vw,46px);
   .reihe--4{grid-template-columns:repeat(2,minmax(0,1fr));}
   .fan{display:none;}
 }
-
-/* ============================================================
-   Handy: aus dem Organigramm wird ein Baum.
-   Gestapelte Kacheln wären eine Liste — die Hierarchie ginge
-   verloren. Stattdessen: Karten als Zeilen (halbe Höhe) und
-   eine eingerückte Schiene mit Abzweigen, wie in einem
-   Dateibaum. Ebene 1 ganz links, Klaus eine Stufe ein, die
-   Werkstatt zwei Stufen — man sieht sofort, wer unter wem hängt.
-   ============================================================ */
 @media (max-width:760px){
-  :root{--einzug:22px;}
-
-  /* Karte wird zur Zeile: Bild links, Text rechts.
-     Grid statt Flex, damit die Struktur ohne HTML-Änderung hält. */
-  .karte{display:grid;grid-template-columns:58px minmax(0,1fr);
-         grid-template-areas:"bild name" "bild rolle" "bild text";
-         column-gap:14px;text-align:left;align-items:start;
-         padding:15px 16px 17px;max-width:none;width:100%;flex-basis:auto;border-radius:16px;}
-  .gruender .karte,.fuehrung .karte{max-width:none;flex-basis:auto;padding:15px 16px 17px;}
-  .karte .avatar,.gruender .avatar,.fuehrung .avatar{
-         grid-area:bild;align-self:start;width:58px;height:58px;}
-  .karte h3,.gruender .karte h3{grid-area:name;margin:0;font-size:17px;line-height:1.25;}
-  .karte .rolle{grid-area:rolle;margin-top:3px;font-size:10.5px;}
-  .karte p{grid-area:text;margin-top:8px;font-size:13.5px;line-height:1.55;}
-  .karte:hover{transform:none;}          /* auf Touch gibt es kein Hover */
-
-  .reihe{gap:10px;}
-  .reihe--4{grid-template-columns:minmax(0,1fr);gap:10px;justify-items:stretch;}
-  .reihe--4 .karte{max-width:none;width:100%;}
-
-  /* Beschriftungen wandern nach links — mittig neben einen Baum sieht falsch aus */
-  .ebene-label{text-align:left;margin-bottom:12px;}
-  .connector{display:none;}               /* die Schiene übernimmt das */
-
-  .ebene + .ebene{margin-top:26px;}
-  .fuehrung{padding-left:var(--einzug);}
-  .werkstatt{padding-left:calc(var(--einzug) * 2);}
-  .fuehrung .ebene-label,.werkstatt .ebene-label{margin-left:2px;}
-
-  /* Schiene + Abzweig. Jede Karte bringt ihr eigenes Stück Schiene mit:
-     von der Lücke über ihr bis zu ihrer Unterkante — so stoßen die
-     Stücke lückenlos aneinander. Nur die letzte Karte kürzt bis zu
-     ihrem Abzweig, damit die Linie nicht ins Leere weiterläuft. */
-  .fuehrung .karte::before,.werkstatt .karte::before{
-    content:"";position:absolute;left:calc(var(--einzug) * -1);top:38px;
-    width:var(--einzug);height:1px;background:var(--gold);opacity:.45;}
-  .fuehrung .karte::after,.werkstatt .karte::after{
-    content:"";position:absolute;left:calc(var(--einzug) * -1);top:-10px;bottom:0;
-    width:1px;background:var(--gold);opacity:.45;}
-  /* Die erste Karte einer Ebene zieht die Linie über die Beschriftung hoch. */
-  .fuehrung .karte::after,.werkstatt .karte:first-child::after{top:-40px;}
-  /* Die letzte endet am eigenen Abzweig. */
-  .fuehrung .karte::after,.werkstatt .karte:last-child::after{bottom:auto;height:78px;}
-  .werkstatt .karte:last-child::after{height:48px;}
-
-  .fuehrung::before{width:min(420px,86vw);height:min(420px,86vw);top:50%;}
+  .connector::before{height:26px;}
+  .karte{flex-basis:100%;max-width:420px;}
+  .gruender .karte,.fuehrung .karte{flex-basis:100%;max-width:420px;}
+}
+@media (max-width:560px){
+  .reihe--4{grid-template-columns:minmax(0,1fr);justify-items:center;}
+  .reihe--4 .karte{max-width:420px;width:100%;}
 }
 
 /* Bewegungsarm: alles sofort da, nichts animiert, kein Funkenfeld. */
@@ -306,7 +258,7 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.6vw,46px);
 
   <div class="connector"></div>
 
-  <div class="ebene werkstatt">
+  <div class="ebene">
     <div class="ebene-label" data-anim>Die Werkstatt</div>
     <div class="fan"><i></i><i></i><i></i><i></i></div>
     <div class="reihe reihe--4">
